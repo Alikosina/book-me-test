@@ -1,7 +1,9 @@
 import * as React from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Main } from "../Main/Main";
+import { SignIn } from "../SignIn/SignIn";
 import { NavBar } from "../../components/NavBar/NavBar";
+import "semantic-ui-css/semantic.min.css";
 import "./App.scss";
 
 export class App extends React.Component {
@@ -10,7 +12,12 @@ export class App extends React.Component {
       <BrowserRouter>
         <NavBar />
         <h1>Book-Me-Test</h1>
-        <Main />
+        <Switch>
+          <Route path="/" exact component={Main} />
+          <Route path="/signin" component={SignIn} />
+        </Switch>
+        {/* <Main />
+        <SignIn /> */}
       </BrowserRouter>
     );
   }
