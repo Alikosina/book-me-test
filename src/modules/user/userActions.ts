@@ -1,10 +1,24 @@
-export const getUserInfo = (id: number) => {
+import { CREATE_USER } from "./actionsConst";
+
+export interface UserInfoModel {
+  firstName: string;
+  lastName: string;
+}
+
+export const createUser = (userInfo: UserInfoModel) => {
   return (dispatch: any, getState: any, { getFirebase, getFirestore }: any) => {
     const fireStore = getFirestore();
-    console.log("fireStore = ", fireStore);
+    fireStore
+      .collection("users")
+      .add({
+        ...userInfo,
+        createdAt: new Date()
+      })
+      .then(() => {
+        console.log("SUCCEEEEED!!!");
+      });
     dispatch({
-      type: "GET_USER_INFO",
-      payload: id
+      type: CREATE_USER
     });
   };
 };
