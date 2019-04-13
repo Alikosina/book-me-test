@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Input, Button, Message } from "semantic-ui-react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import "./SignIn.scss";
 import { signIn } from "../../modules/auth/authActions";
 
@@ -8,6 +9,7 @@ class SignInContainer extends React.Component<
   {
     signIn: any;
     authError?: string;
+    auth: any;
   },
   {
     email: string;
@@ -41,7 +43,10 @@ class SignInContainer extends React.Component<
   };
   render() {
     const { email, password } = this.state;
-    const { authError } = this.props;
+    const { authError, auth } = this.props;
+
+    if (auth.uid) return <Redirect to="/" />;
+
     return (
       <div className="SignIn">
         <div className="SignIn__field">
@@ -65,7 +70,7 @@ class SignInContainer extends React.Component<
             value={password}
             className="SigIn__input"
             id="password"
-            type="text"
+            type="password"
           />
         </div>
         <div>
@@ -86,9 +91,12 @@ class SignInContainer extends React.Component<
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  authError: state.auth.authError
-});
+const mapStateToProps = (state: any) => {
+  return {
+    authError: state.auth.authError,
+    auth: state.firebase.auth
+  };
+};
 
 const mapDispatchToProps = (dispatch: any) => ({
   signIn: (signInData: any) => dispatch(signIn(signInData))

@@ -10,7 +10,6 @@ class MainContainer extends React.Component<any> {
   }
 
   render() {
-    console.log("props = ", this.props);
     return <div>Some Info</div>;
   }
 }

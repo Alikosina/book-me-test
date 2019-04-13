@@ -19,6 +19,9 @@ export const authReducer = (
         ...state,
         authError: null
       };
+    case "SIGNOUT_SUCCESS":
+      console.log("signout success");
+      return state;
   }
   return state;
 };
