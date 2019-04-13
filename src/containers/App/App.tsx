@@ -16,8 +16,6 @@ export class App extends React.Component {
           <Route path="/" exact component={Main} />
           <Route path="/signin" component={SignIn} />
         </Switch>
-        {/* <Main />
-        <SignIn /> */}
       </BrowserRouter>
     );
   }
