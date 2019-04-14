@@ -16,7 +16,7 @@ export const signIn = (signInData: any) => {
 export const signOut = () => {
   return (dispatch: any, getState: any, { getFirebase }: any) => {
     const firebase = getFirebase();
-
+    const state = getState();
     firebase
       .auth()
       .signOut()
