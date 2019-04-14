@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Input, Button, Message } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import "./SignIn.scss";
 import { signIn } from "../../modules/auth/authActions";
 
@@ -84,7 +84,11 @@ class SignInContainer extends React.Component<
           <Button onClick={this.signIn} color="black">
             Войти
           </Button>
-          <Button color="black">Зарегистрироваться</Button>
+          <Button color="black">
+            <Link className="SignIn__link" to="/signup">
+              Зарегистрироваться
+            </Link>
+          </Button>
         </div>
       </div>
     );
