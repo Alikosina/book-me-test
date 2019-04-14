@@ -4,19 +4,13 @@ import { connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
 import "./SignIn.scss";
 import { signIn } from "../../modules/auth/authActions";
+import { SignInContainerModel } from "./SignInContainerModel";
 
 class SignInContainer extends React.Component<
-  {
-    signIn: any;
-    authError?: string;
-    auth: any;
-  },
-  {
-    email: string;
-    password: string;
-  }
+  SignInContainerModel.Props,
+  SignInContainerModel.State
 > {
-  constructor(props: any) {
+  constructor(props: SignInContainerModel.Props) {
     super(props);
     this.state = {
       email: "",
@@ -32,13 +26,13 @@ class SignInContainer extends React.Component<
     });
   };
 
-  handleChangeEmail = (value: React.FormEvent<HTMLInputElement>) => {
-    const email = value.currentTarget.value;
+  handleChangeEmail = (event: React.FormEvent<HTMLInputElement>) => {
+    const email = event.currentTarget.value;
     this.setState({ email });
   };
 
-  handleChangePassword = (value: React.FormEvent<HTMLInputElement>) => {
-    const password = value.currentTarget.value;
+  handleChangePassword = (event: React.FormEvent<HTMLInputElement>) => {
+    const password = event.currentTarget.value;
     this.setState({ password });
   };
   render() {
@@ -103,7 +97,8 @@ const mapStateToProps = (state: any) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
-  signIn: (signInData: any) => dispatch(signIn(signInData))
+  signIn: (signInData: SignInContainerModel.State) =>
+    dispatch(signIn(signInData))
 });
 
 export const SignIn = connect(

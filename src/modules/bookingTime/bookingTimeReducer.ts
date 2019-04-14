@@ -1,16 +1,20 @@
-const initState: any = {
-  saveError: null,
-  bookingTime: {}
-};
+import {
+  SAVE_BOOKING_TIME_ERROR,
+  SAVE_BOOKING_TIME_SUCCESS
+} from "./bookingTimeActionsConst";
+import { BookingTimeModel } from "./bookingTimeModel";
 
-export const bookingTimeReducer = (state: any = initState, action: any) => {
+export const bookingTimeReducer = (
+  state: BookingTimeModel.State = BookingTimeModel.initState,
+  action: any
+) => {
   switch (action.type) {
-    case "SAVE_BOOKING_TIME_ERROR":
+    case SAVE_BOOKING_TIME_ERROR:
       return {
         ...state,
         saveError: "Errorr!!!"
       };
-    case "SAVE_BOOKING_TIME_SUCCESS":
+    case SAVE_BOOKING_TIME_SUCCESS:
       return {
         ...state,
         saveError: null

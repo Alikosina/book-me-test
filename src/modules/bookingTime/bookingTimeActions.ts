@@ -1,3 +1,8 @@
+import {
+  SAVE_BOOKING_TIME_SUCCESS,
+  SAVE_BOOKING_TIME_ERROR
+} from "./bookingTimeActionsConst";
+
 export const saveBookingTime = (bookingTimeObj: any) => {
   return (dispatch: any, getState: any, { getFirestore }: any) => {
     const firestore = getFirestore();
@@ -16,12 +21,12 @@ export const saveBookingTime = (bookingTimeObj: any) => {
         })
         .then(() => {
           dispatch({
-            type: "SAVE_BOOKING_TIME_SUCCESS"
+            type: SAVE_BOOKING_TIME_SUCCESS
           });
         })
         .catch(() => {
           dispatch({
-            type: "SAVE_BOOKING_TIME_ERROR"
+            type: SAVE_BOOKING_TIME_ERROR
           });
         });
     } else {

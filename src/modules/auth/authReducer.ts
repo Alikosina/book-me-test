@@ -1,4 +1,11 @@
 import { AuthModel } from "./authModel";
+import {
+  SIGN_IN_ERROR,
+  SIGN_IN_SUCCESS,
+  SIGNOUT_SUCCESS,
+  SIGNUP_SUCCESS,
+  SIGNUP_ERROR
+} from "./authActionsConst";
 
 const initState: AuthModel.InitState = {
   authError: null
@@ -9,26 +16,26 @@ export const authReducer = (
   action: any
 ) => {
   switch (action.type) {
-    case "SIGN_IN_ERROR":
+    case SIGN_IN_ERROR:
       return {
         ...state,
         authError: "Error"
       };
-    case "SIGN_IN_SUCCESS":
+    case SIGN_IN_SUCCESS:
       return {
         ...state,
         authError: null
       };
-    case "SIGNOUT_SUCCESS":
+    case SIGNOUT_SUCCESS:
       console.log("signout success");
       return state;
-    case "SIGNUP_SUCCESS":
+    case SIGNUP_SUCCESS:
       console.log("signup success!!!");
       return {
         ...state,
         authError: null
       };
-    case "SIGNUP_ERROR":
+    case SIGNUP_ERROR:
       return {
         ...state,
         authError: "Errror!"

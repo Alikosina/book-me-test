@@ -1,14 +1,23 @@
-export const signIn = (signInData: any) => {
+import { SignInContainerModel } from "../../containers/SignIn/SignInContainerModel";
+import {
+  SIGN_IN_SUCCESS,
+  SIGN_IN_ERROR,
+  SIGNOUT_SUCCESS,
+  SIGNUP_SUCCESS,
+  SIGNUP_ERROR
+} from "./authActionsConst";
+
+export const signIn = (signInData: SignInContainerModel.State) => {
   return (dispatch: any, getState: any, { getFirebase }: any) => {
     const firebase = getFirebase();
     firebase
       .auth()
       .signInWithEmailAndPassword(signInData.email, signInData.password)
       .then(() => {
-        dispatch({ type: "SIGN_IN_SUCCESS" });
+        dispatch({ type: SIGN_IN_SUCCESS });
       })
       .catch(() => {
-        dispatch({ type: "SIGN_IN_ERROR" });
+        dispatch({ type: SIGN_IN_ERROR });
       });
   };
 };
@@ -22,7 +31,7 @@ export const signOut = () => {
       .signOut()
       .then(() => {
         dispatch({
-          type: "SIGNOUT_SUCCESS"
+          type: SIGNOUT_SUCCESS
         });
       });
   };
@@ -47,11 +56,11 @@ export const signUp = (newUser: any) => {
           })
           .then(() => {
             dispatch({
-              type: "SIGNUP_SUCCESS"
+              type: SIGNUP_SUCCESS
             });
           })
           .catch(() => {
-            dispatch({ type: "SIGNUP_ERROR", payload: "SignUp Error!!" });
+            dispatch({ type: SIGNUP_ERROR, payload: "SignUp Error!!" });
           });
       });
   };

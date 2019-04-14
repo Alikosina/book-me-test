@@ -135,15 +135,17 @@ class BookingContainer extends React.Component<
               {hours.map(hour => {
                 const selectedBookingDay =
                   selectedBookingTimes && selectedBookingTimes[day];
-                const isDisabled =
-                  (selectedBookingTimes &&
-                    (getNumberFromTimeString(selectedBookingDay.timeFrom) >
-                      getNumberFromTimeString(hour) ||
-                      getNumberFromTimeString(selectedBookingDay.timeTo) <
-                        getNumberFromTimeString(hour))) ||
-                  (selectedBookingDay &&
-                    selectedBookingDay.reservedTimes &&
-                    selectedBookingDay.reservedTimes.includes(hour));
+                const isOutOfRange =
+                  selectedBookingTimes &&
+                  (getNumberFromTimeString(selectedBookingDay.timeFrom) >
+                    getNumberFromTimeString(hour) ||
+                    getNumberFromTimeString(selectedBookingDay.timeTo) <
+                      getNumberFromTimeString(hour));
+                const isReserved =
+                  selectedBookingDay &&
+                  selectedBookingDay.reservedTimes &&
+                  selectedBookingDay.reservedTimes.includes(hour);
+                const isDisabled = isOutOfRange || isReserved;
                 return (
                   <div className="Booking__item__hour">
                     <span
