@@ -5,6 +5,14 @@
   align-items: center;
   padding-top: 30px;
   margin-bottom: 30px;
+  &__buttons-container {
+    &__link {
+      color: #fff;
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
 }
 
 .BookingTime {

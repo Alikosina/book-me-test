@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Button } from "semantic-ui-react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 // @ts-ignore
 import TimePicker from "react-time-picker";
 import * as moment from "moment";
@@ -80,9 +80,18 @@ class MainContainer extends React.Component<
     const { bookingtimes: nextBookingTimes } = nextProps;
 
     if (
-      !bookingtimes &&
-      nextBookingTimes &&
-      nextBookingTimes.some((b: any) => b.authorUid && b.authorUid === auth.uid)
+      (bookingtimes &&
+        !bookingtimes.some(
+          (b: any) => b.authorUid && b.authorUid === auth.uid
+        ) &&
+        nextBookingTimes.some(
+          (b: any) => b.authorUid && b.authorUid === auth.uid
+        )) ||
+      (!bookingtimes &&
+        nextBookingTimes &&
+        nextBookingTimes.some(
+          (b: any) => b.authorUid && b.authorUid === auth.uid
+        ))
     ) {
       this.setState({
         bookingTime: nextBookingTimes.find(
@@ -143,7 +152,12 @@ class MainContainer extends React.Component<
             Сохранить
           </Button>
           <Button disabled={!hasBookingTime} color="black">
-            Календарь занятости
+            <Link
+              className="Main__buttons-container__link"
+              to={`/booking/${auth.uid}`}
+            >
+              Календарь занятости
+            </Link>
           </Button>
         </div>
       </div>

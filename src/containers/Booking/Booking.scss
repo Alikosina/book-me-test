@@ -1,0 +1,41 @@
+.Booking {
+  display: flex;
+  padding: 0 20px;
+  font-family: "Roboto";
+  &__item {
+    flex-grow: 1;
+    flex-basis: 0;
+    &__title {
+      text-align: center;
+    }
+    &__hour {
+      text-align: center;
+      margin-bottom: 10px;
+      &__label {
+        padding: 10px;
+        border: 1px solid;
+        display: inline-block;
+        &_disable {
+          position: relative;
+          color: #e4e4e4;
+          border-color: transparent;
+          &:after {
+            content: "";
+            display: block;
+            left: 0px;
+            height: 1px;
+            background: #e4e4e4;
+            position: absolute;
+            top: 50%;
+            width: 100%;
+          }
+        }
+        &_active {
+          cursor: pointer;
+          border-color: #000;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+}
