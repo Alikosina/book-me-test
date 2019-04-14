@@ -5,6 +5,8 @@ import { firestoreConnect } from "react-redux-firebase";
 import { DAYS_OF_THE_WEEK } from "../Main/MainContainerModel";
 import classnames from "classnames";
 import "./Booking.scss";
+import { BookingForm } from "../../components/BookingForm/BookingForm";
+import { reserveTime } from "../../modules/bookingTime/bookingTimeActions";
 
 const HOURS = [
   "01:00",
@@ -41,6 +43,9 @@ class BookingContainer extends React.Component<
     hours: any[];
     authorId: string;
     selectedBookingTimes: any;
+    isFormOpen: boolean;
+    selectedDay: string;
+    selectedHour: string;
   }
 > {
   constructor(props: any) {
@@ -53,7 +58,10 @@ class BookingContainer extends React.Component<
     this.state = {
       hours,
       authorId,
-      selectedBookingTimes
+      selectedBookingTimes,
+      isFormOpen: false,
+      selectedDay: "",
+      selectedHour: ""
     };
   }
 
@@ -80,37 +88,87 @@ class BookingContainer extends React.Component<
     }
     return true;
   }
+
+  onHourClick = (selectedDay: string, selectedHour: string) => {
+    this.setState({
+      isFormOpen: true,
+      selectedDay,
+      selectedHour
+    });
+  };
+
+  onFormClose = () => {
+    this.setState({
+      isFormOpen: false
+    });
+  };
+
+  onSubmit = () => {
+    const { reserveTime } = this.props;
+    const { selectedDay, selectedHour, selectedBookingTimes } = this.state;
+    const selectedBookingTimeDay = selectedBookingTimes[selectedDay];
+    const { reservedTimes = [] } = selectedBookingTimeDay;
+    const nextReservedTimes = [...reservedTimes, selectedHour];
+    const nextSelectedBookingTimes = {
+      ...selectedBookingTimes,
+      [selectedDay]: {
+        ...selectedBookingTimeDay,
+        reservedTimes: nextReservedTimes
+      }
+    };
+    reserveTime(nextSelectedBookingTimes);
+    this.setState({
+      isFormOpen: false,
+      selectedBookingTimes: nextSelectedBookingTimes
+    });
+  };
+
   render() {
-    const { hours, selectedBookingTimes } = this.state;
+    const { hours, selectedBookingTimes, isFormOpen } = this.state;
 
     return (
-      <div className="Booking">
-        {DAYS_OF_THE_WEEK.map(day => (
-          <div className="Booking__item">
-            <h2 className="Booking__item__title">{day}</h2>
-            {hours.map(hour => {
-              const isDisabled =
-                selectedBookingTimes &&
-                (getNumberFromTimeString(selectedBookingTimes[day].timeFrom) >
-                  getNumberFromTimeString(hour) ||
-                  getNumberFromTimeString(selectedBookingTimes[day].timeTo) <
-                    getNumberFromTimeString(hour));
-              return (
-                <div className="Booking__item__hour">
-                  <span
-                    className={classnames("Booking__item__hour__label", {
-                      Booking__item__hour__label_disable: isDisabled,
-                      Booking__item__hour__label_active: !isDisabled
-                    })}
-                  >
-                    {hour}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        ))}
-      </div>
+      <React.Fragment>
+        <div className="Booking">
+          {DAYS_OF_THE_WEEK.map(day => (
+            <div className="Booking__item">
+              <h2 className="Booking__item__title">{day}</h2>
+              {hours.map(hour => {
+                const selectedBookingDay =
+                  selectedBookingTimes && selectedBookingTimes[day];
+                const isDisabled =
+                  (selectedBookingTimes &&
+                    (getNumberFromTimeString(selectedBookingDay.timeFrom) >
+                      getNumberFromTimeString(hour) ||
+                      getNumberFromTimeString(selectedBookingDay.timeTo) <
+                        getNumberFromTimeString(hour))) ||
+                  (selectedBookingDay &&
+                    selectedBookingDay.reservedTimes &&
+                    selectedBookingDay.reservedTimes.includes(hour));
+                return (
+                  <div className="Booking__item__hour">
+                    <span
+                      onClick={
+                        !isDisabled && this.onHourClick.bind(this, day, hour)
+                      }
+                      className={classnames("Booking__item__hour__label", {
+                        Booking__item__hour__label_disable: isDisabled,
+                        Booking__item__hour__label_active: !isDisabled
+                      })}
+                    >
+                      {hour}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+        <BookingForm
+          onSubmit={this.onSubmit}
+          onClose={this.onFormClose}
+          isOpen={isFormOpen}
+        />
+      </React.Fragment>
     );
   }
 }
@@ -119,8 +177,15 @@ const mapStateToProps = (state: any) => ({
   bookingtimes: state.fireStore.ordered.bookingtimes
 });
 
+const mapDispatchToProps = (dispatch: any) => ({
+  reserveTime: (bookingTimeObj: any) => dispatch(reserveTime(bookingTimeObj))
+});
+
 export const Booking = compose(
-  connect(mapStateToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   firestoreConnect([
     {
       collection: "bookingtimes"

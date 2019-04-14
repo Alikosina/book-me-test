@@ -35,3 +35,16 @@ export const saveBookingTime = (bookingTimeObj: any) => {
     }
   };
 };
+
+export const reserveTime = (bookingTimeObj: any) => {
+  return (dispatch: any, getState: any, { getFirestore }: any) => {
+    const firestore = getFirestore();
+
+    firestore
+      .collection("bookingtimes")
+      .doc(bookingTimeObj.id)
+      .set({
+        ...bookingTimeObj
+      });
+  };
+};

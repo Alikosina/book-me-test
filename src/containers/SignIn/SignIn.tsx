@@ -32,12 +32,12 @@ class SignInContainer extends React.Component<
     });
   };
 
-  handleChangeEmail = (value: any) => {
+  handleChangeEmail = (value: React.FormEvent<HTMLInputElement>) => {
     const email = value.currentTarget.value;
     this.setState({ email });
   };
 
-  handleChangePassword = (value: any) => {
+  handleChangePassword = (value: React.FormEvent<HTMLInputElement>) => {
     const password = value.currentTarget.value;
     this.setState({ password });
   };
