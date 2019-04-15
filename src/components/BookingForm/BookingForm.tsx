@@ -3,17 +3,6 @@ import * as Modal from "react-modal";
 import { Input, Button } from "semantic-ui-react";
 import "./BookingForm.scss";
 
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)"
-  }
-};
-
 export interface BookingInfoModel {
   firstName: string;
   lastName: string;
@@ -72,11 +61,8 @@ export class BookingForm extends React.PureComponent<
     const { firstName, lastName, email } = this.state;
     return (
       <Modal
-        onRequestClose={() => {}}
-        onAfterClose={() => {}}
         isOpen={isOpen}
-        style={customStyles}
-        contentLabel="Example Modal"
+        className="BookingForm__modal"
       >
         <div className="BookingForm">
           <div className="BookingForm__field">
@@ -115,7 +101,6 @@ export class BookingForm extends React.PureComponent<
               type="text"
             />
           </div>
-          <div />
           <div className="SignIn__buttons-container">
             <Button onClick={this.onSubmit} color="black">
               Сохранить
